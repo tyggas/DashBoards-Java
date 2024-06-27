@@ -6,6 +6,104 @@
     <title>Visualização de Máquinas</title>
     <link rel="stylesheet" href="Style KPI.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .nav-left {
+            display: flex;
+        }
+        .nav-left .nav-link {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .nav-right .notifications {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .filter-container {
+            background-color: #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .machines {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .machine-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .machine-card h2 {
+            margin-top: 0;
+        }
+        .machine-card p {
+            margin: 5px 0;
+        }
+        .machine-card .progress {
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .machine-card .progress .progress-bar {
+            height: 100%;
+            background-color: #007bff;
+        }
+        .machine-card .gauge {
+            margin-top: 10px;
+        }
+        .notifications-sidebar {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            z-index: 100;
+        }
+        .notifications-sidebar h2 {
+            margin-top: 0;
+        }
+        .notification {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -35,103 +133,8 @@
 </div>
 <div class="container">
     <h2>Visualização de Máquinas</h2>
-    <div class="machines">
-        <div class="machine-card failure">
-            <h2>Máquina 1 <span>Falha</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>2.459 / 4.500</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 20.56%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge1"></canvas>
-                </div>
-                <p>20,56% OEE</p>
-                <p>Qtd. Produzida: 800 Tarde</p>
-            </div>
-        </div>
-        <div class="machine-card failure">
-            <h2>Máquina 2 <span>Falha</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>49 / 2.984</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 43.68%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge2"></canvas>
-                </div>
-                <p>43,68% OEE</p>
-                <p>Qtd. Produzida: 345 Tarde</p>
-            </div>
-        </div>
-        <div class="machine-card producing">
-            <h2>Máquina 3 <span>Produzindo</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>403 / 2.345</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 39.45%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge3"></canvas>
-                </div>
-                <p>39,45% OEE</p>
-                <p>Qtd. Produzida: 124 Tarde</p>
-            </div>
-        </div>
-        <div class="machine-card producing">
-            <h2>Máquina 4 <span>Produzindo</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>1.380 / 3.780</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 62.32%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge4"></canvas>
-                </div>
-                <p>62,32% OEE</p>
-                <p>Qtd. Produzida: 354 Tarde</p>
-            </div>
-        </div>
-        <div class="machine-card operating">
-            <h2>Máquina 5 <span>Operando</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>184 / 3.405</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 69.19%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge5"></canvas>
-                </div>
-                <p>69,19% OEE</p>
-                <p>Qtd. Produzida: 197 Tarde</p>
-            </div>
-        </div>
-        <div class="machine-card operating">
-            <h2>Máquina 6 <span>Operando</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>200 / 1.000</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 20%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge6"></canvas>
-                </div>
-                <p>20% OEE</p>
-                <p>Qtd. Produzida: 100 Tarde</p>
-            </div>
-        </div>
+    <div class="machines" id="machinesContainer">
+        <!-- Máquinas serão inseridas aqui -->
     </div>
 </div>
 <div id="notificationsSidebar" class="notifications-sidebar">
@@ -141,6 +144,102 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="Java Script KPI.js"></script>
+<script>
+    async function fetchMachineData() {
+        // Simulação de dados recebidos do backend
+        return [
+            {
+                id: 1,
+                name: "Máquina 1",
+                status: "failure",
+                production: 1000,
+                totalProduction: 4500,
+                oeePercentage: 20.56,
+                productionDetail: "800 Tarde"
+            },
+            {
+                id: 2,
+                name: "Máquina 2",
+                status: "failure",
+                production: 49,
+                totalProduction: 2984,
+                oeePercentage: 43.68,
+                productionDetail: "345 Tarde"
+            },
+            {
+                id: 3,
+                name: "Máquina 3",
+                status: "producing",
+                production: 403,
+                totalProduction: 2345,
+                oeePercentage: 39.45,
+                productionDetail: "124 Tarde"
+            },
+            {
+                id: 4,
+                name: "Máquina 4",
+                status: "producing",
+                production: 1380,
+                totalProduction: 3780,
+                oeePercentage: 62.32,
+                productionDetail: "354 Tarde"
+            },
+            {
+                id: 5,
+                name: "Máquina 5",
+                status: "operating",
+                production: 184,
+                totalProduction: 3405,
+                oeePercentage: 69.19,
+                productionDetail: "197 Tarde"
+            },
+            {
+                id: 6,
+                name: "Máquina 6",
+                status: "operating",
+                production: 200,
+                totalProduction: 1000,
+                oeePercentage: 20,
+                productionDetail: "100 Tarde"
+            }
+        ];
+    }
+
+    function createMachineCard(machine) {
+        const card = document.createElement('div');
+        card.className = `machine-card ${machine.status}`;
+        card.innerHTML = `
+            <h2>${machine.name} <span>${machine.status.charAt(0).toUpperCase() + machine.status.slice(1)}</span></h2>
+            <div class="machine-info">
+                <p><i class="fas fa-box"></i> Produto 1</p>
+                <p><i class="fas fa-box"></i> Produto 2</p>
+                <p>${machine.production} / ${machine.totalProduction}</p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: ${machine.oeePercentage}%;"></div>
+                </div>
+                <div class="gauge">
+                    <canvas id="gauge${machine.id}"></canvas>
+                </div>
+                <p>${machine.oeePercentage}% OEE</p>
+                <p>Qtd. Produzida: ${machine.productionDetail}</p>
+            </div>
+        `;
+        return card;
+    }
+
+    async function init() {
+        const machinesContainer = document.getElementById('machinesContainer');
+        machinesContainer.innerHTML = '';
+
+        const machineData = await fetchMachineData();
+
+        machineData.forEach(machine => {
+            const card = createMachineCard(machine);
+            machinesContainer.appendChild(card);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
