@@ -235,3 +235,24 @@
         // Adiciona evento de clique para redirecionar para a página da máquina
         card.addEventListener('click', function() {
             window.location.href = `detalhes_maquina.html?id=${machine.id}`;
+        });
+
+        return card;
+    }
+
+    async function init() {
+        const machinesContainer = document.getElementById('machinesContainer');
+        machinesContainer.innerHTML = '';
+
+        const machineData = await fetchMachineData();
+
+        machineData.forEach(machine => {
+            const card = createMachineCard(machine);
+            machinesContainer.appendChild(card);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
