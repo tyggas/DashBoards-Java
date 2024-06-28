@@ -61,11 +61,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 20px;
             text-align: center;
-            cursor: pointer; /* Adiciona cursor pointer para indicar que é clicável */
-            transition: transform 0.3s ease; /* Efeito de transição */
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
         .machine-card:hover {
-            transform: translateY(-5px); /* Efeito de levantar ao passar o mouse */
+            transform: translateY(-5px);
         }
         .machine-card h2 {
             margin-top: 0;
@@ -115,7 +115,7 @@
     <nav class="navbar">
         <div class="nav-left">
             <a href="index2.html" class="nav-link">Geral</a>
-            <a href="Kpi Maquinas.html" class="nav-link">Kpi Máquinas</a>
+            <a href="index.html" class="nav-link">Kpi Máquinas</a>
             <a href="Cadastro maquina.html" class="nav-link">Cadastro de Máquina</a>
         </div>
         <div class="nav-right">
@@ -144,7 +144,7 @@
         <!-- Máquinas serão inseridas aqui -->
     </div>
 </div>
-<div id="notificationsSidebar" class="notifications-sidebar">
+<div id="notificationsSidebar" class="notifications-sidebar" style="display: none;">
     <h2>Notificações</h2>
     <div class="notification">
         <p>Não há notificações no momento.</p>
@@ -153,7 +153,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     async function fetchMachineData() {
-        // Simulação de dados recebidos do backend
         return [
             {
                 id: 1,
@@ -227,13 +226,14 @@
                 <div class="gauge">
                     <canvas id="gauge${machine.id}"></canvas>
                 </div>
-                <p>${machine.oeePercentage}% OEE</p>
-                <p>Qtd. Produzida: ${machine.productionDetail}</p>
-            </div>
-        `;
+            <p>${machine.oeePercentage}% OEE</p>
+            <p>Qtd. Produzida: ${machine.productionDetail}</p>
+        </div>
+    `;
 
-        // Adiciona evento de clique para redirecionar para a página da máquina
         card.addEventListener('click', function() {
+            console.log(`Clicou na máquina ${machine.id}`);
+            console.log(`Redirecionando para detalhes_maquina.html?id=${machine.id}`);
             window.location.href = `detalhes_maquina.html?id=${machine.id}`;
         });
 
@@ -253,6 +253,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
+
+    function toggleNotifications() {
+        const notificationsSidebar = document.getElementById('notificationsSidebar');
+        if (notificationsSidebar.style.display === 'none' || !notificationsSidebar.style.display) {
+            notificationsSidebar.style.display = 'block';
+        } else {
+            notificationsSidebar.style.display = 'none';
+        }
+    }
 </script>
 </body>
 </html>

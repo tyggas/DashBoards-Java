@@ -3,57 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard da Máquina</title>
-    <link rel="stylesheet" href="styles detalhes_maquinas.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Detalhes da Máquina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>Dashboard da Máquina</h1>
-</header>
-<section class="dashboard">
-    <div class="section-header">
-        <h2>Dados de Produção</h2>
-    </div>
-    <div class="production-data">
-        <div class="data-item">
-            <h3>Produção Total</h3>
-            <p>2500 peças</p>
-        </div>
-        <div class="data-item">
-            <h3>Peças Defeituosas</h3>
-            <p>150 peças</p>
-        </div>
-        <div class="data-item">
-            <h3>Produtividade</h3>
-            <p>85%</p>
-        </div>
-    </div>
-    <canvas id="productionChart"></canvas>
-</section>
-<section class="dashboard">
-    <div class="section-header">
-        <h2>Dados dos Sensores</h2>
-    </div>
-    <div class="sensor-data">
-        <div class="sensor-item">
-            <h3>Temperatura</h3>
-            <p>28°C</p>
-        </div>
-        <div class="sensor-item">
-            <h3>Umidade</h3>
-            <p>65%</p>
-        </div>
-        <div class="sensor-item">
-            <h3>Pressão</h3>
-            <p>1015 hPa</p>
-        </div>
-    </div>
-    <canvas id="sensorChart"></canvas>
-</section>
-<footer>
-    <p>Dashboard da Máquina &copy; 2024</p>
-</footer>
-<script src="scripts.js"></script>
+<div class="container">
+    <h2>Detalhes da Máquina</h2>
+    <p id="machineDetails"></p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const machineId = params.get('id');
+        const machineDetailsElement = document.getElementById('machineDetails');
+
+        if (machineId) {
+            machineDetailsElement.textContent = `Detalhes para a Máquina ID: ${machineId}`;
+        } else {
+            machineDetailsElement.textContent = 'Nenhum ID de máquina fornecido.';
+        }
+    });
+</script>
 </body>
 </html>
