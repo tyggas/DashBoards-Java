@@ -3,264 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualização de Máquinas</title>
-    <link rel="stylesheet" href="Style KPI.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .navbar {
-            background-color: #333;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
-        .nav-left {
-            display: flex;
-        }
-        .nav-left .nav-link {
-            color: #fff;
-            text-decoration: none;
-            margin-right: 20px;
-        }
-        .nav-right .notifications {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .filter-container {
-            background-color: #ddd;
-            padding: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .machines {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .machine-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .machine-card:hover {
-            transform: translateY(-5px);
-        }
-        .machine-card h2 {
-            margin-top: 0;
-        }
-        .machine-card p {
-            margin: 5px 0;
-        }
-        .machine-card .progress {
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        .machine-card .progress .progress-bar {
-            height: 100%;
-            background-color: #007bff;
-        }
-        .machine-card .gauge {
-            margin-top: 10px;
-        }
-        .notifications-sidebar {
-            background-color: #f4f4f4;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 300px;
-            z-index: 100;
-        }
-        .notifications-sidebar h2 {
-            margin-top: 0;
-        }
-        .notification {
-            background-color: #fff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="/css/Style%20tela%20de%20login.css">
 </head>
 <body>
-<header>
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="index2.html" class="nav-link">Geral</a>
-            <a href="index.html" class="nav-link">Kpi Máquinas</a>
-            <a href="Cadastro maquina.html" class="nav-link">Cadastro de Máquina</a>
-        </div>
-        <div class="nav-right">
-            <button class="btn notifications" onclick="toggleNotifications()">
-                <i class="fas fa-bell"></i> Notificações
-            </button>
-        </div>
-    </nav>
-</header>
-<div class="filter-container">
-    <select id="center">
-        <option value="generalFactory">Centro de Trabalho: Geral Fábrica</option>
-    </select>
-    <select id="shift" onchange="updateShift()">
-        <option value="firstShift">Turno: 1º turno</option>
-        <option value="secondShift">Turno: 2º turno</option>
-        <option value="thirdShift">Turno: 3º turno</option>
-    </select>
-    <select id="period">
-        <option value="currentWeek">Período: 01/02/2024 - 08/02/2024</option>
-    </select>
-</div>
-<div class="container">
-    <h2>Visualização de Máquinas</h2>
-    <div class="machines" id="machinesContainer">
-        <!-- Máquinas serão inseridas aqui -->
+<div class="main-container">
+    <div class="logo-container">
+        <img src="/imagens/LogoPng.png" alt="Logo" class="logo">
+    </div>
+    <div class="login-container">
+        <form class="login-form" onsubmit="handleLogin(event)">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="username">Nome</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <a href="#" class="forgot-password">Esqueci a minha senha</a>
+            </div>
+            <button type="submit" class="login-btn">Entrar</button>
+        </form>
     </div>
 </div>
-<div id="notificationsSidebar" class="notifications-sidebar" style="display: none;">
-    <h2>Notificações</h2>
-    <div class="notification">
-        <p>Não há notificações no momento.</p>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    async function fetchMachineData() {
-        return [
-            {
-                id: 1,
-                name: "Máquina 1",
-                status: "failure",
-                production: 1000,
-                totalProduction: 4500,
-                oeePercentage: 20.56,
-                productionDetail: "800 Tarde"
-            },
-            {
-                id: 2,
-                name: "Máquina 2",
-                status: "failure",
-                production: 49,
-                totalProduction: 2984,
-                oeePercentage: 43.68,
-                productionDetail: "345 Tarde"
-            },
-            {
-                id: 3,
-                name: "Máquina 3",
-                status: "producing",
-                production: 403,
-                totalProduction: 2345,
-                oeePercentage: 39.45,
-                productionDetail: "124 Tarde"
-            },
-            {
-                id: 4,
-                name: "Máquina 4",
-                status: "producing",
-                production: 1380,
-                totalProduction: 3780,
-                oeePercentage: 62.32,
-                productionDetail: "354 Tarde"
-            },
-            {
-                id: 5,
-                name: "Máquina 5",
-                status: "operating",
-                production: 184,
-                totalProduction: 3405,
-                oeePercentage: 69.19,
-                productionDetail: "197 Tarde"
-            },
-            {
-                id: 6,
-                name: "Máquina 6",
-                status: "operating",
-                production: 200,
-                totalProduction: 1000,
-                oeePercentage: 20,
-                productionDetail: "100 Tarde"
-            }
-        ];
-    }
+    function handleLogin(event) {
+        event.preventDefault();
+        // Aqui você pode adicionar validação adicional se necessário
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-    function createMachineCard(machine) {
-        const card = document.createElement('div');
-        card.className = `machine-card ${machine.status}`;
-        card.innerHTML = `
-            <h2>${machine.name} <span>${machine.status.charAt(0).toUpperCase() + machine.status.slice(1)}</span></h2>
-            <div class="machine-info">
-                <p><i class="fas fa-box"></i> Produto 1</p>
-                <p><i class="fas fa-box"></i> Produto 2</p>
-                <p>${machine.production} / ${machine.totalProduction}</p>
-                <div class="progress">
-                    <div class="progress-bar" style="width: ${machine.oeePercentage}%;"></div>
-                </div>
-                <div class="gauge">
-                    <canvas id="gauge${machine.id}"></canvas>
-                </div>
-            <p>${machine.oeePercentage}% OEE</p>
-            <p>Qtd. Produzida: ${machine.productionDetail}</p>
-        </div>
-    `;
-
-        card.addEventListener('click', function() {
-            console.log(`Clicou na máquina ${machine.id}`);
-            console.log(`Redirecionando para detalhes_maquina.html?id=${machine.id}`);
-            window.location.href = `detalhes_maquina.html?id=${machine.id}`;
-        });
-
-        return card;
-    }
-
-    async function init() {
-        const machinesContainer = document.getElementById('machinesContainer');
-        machinesContainer.innerHTML = '';
-
-        const machineData = await fetchMachineData();
-
-        machineData.forEach(machine => {
-            const card = createMachineCard(machine);
-            machinesContainer.appendChild(card);
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-
-    function toggleNotifications() {
-        const notificationsSidebar = document.getElementById('notificationsSidebar');
-        if (notificationsSidebar.style.display === 'none' || !notificationsSidebar.style.display) {
-            notificationsSidebar.style.display = 'block';
-        } else {
-            notificationsSidebar.style.display = 'none';
-        }
+        // Redirecionar para a página inicial
+        window.location.href = 'index2.html';
     }
 </script>
 </body>
