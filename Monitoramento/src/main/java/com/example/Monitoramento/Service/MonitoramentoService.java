@@ -9,14 +9,13 @@ import com.example.Monitoramento.Repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import java.util.Random;
-
 
 @Service
 public class MonitoramentoService {
+
     @Autowired
     private SensorRepository sensorRepository;
 
@@ -26,19 +25,10 @@ public class MonitoramentoService {
     @Autowired
     private AlertaRepository alertaRepository;
 
-    private Random random = new Random();
-
-    @PostConstruct
-    public void init() {
-        new Thread(this::gerarMonitoramentos).start();
-    }
-
-    public void gerarMonitoramentos() {
-        while (true) {
-            List<Sensor> sensores = sensorRepository.findAll();
-            Sensor sensor = sensores.get(random.nextInt(sensores.size()));
-            LocalDateTime timestamp = LocalDateTime.now();
-            double valor = gerarValor(sensor.getTipo());
+    public void receberDadosMonitoramento(Long sensorId, double valor, LocalDateTime timestamp) {
+        Optional<Sensor> sensorOpt = sensorRepository.findById(sensorId);
+        if (sensorOpt.isPresent()) {
+            Sensor sensor = sensorOpt.get();
 
             Monitoramento monitoramento = new Monitoramento();
             monitoramento.setSensor(sensor);
@@ -47,40 +37,38 @@ public class MonitoramentoService {
 
             monitoramentoRepository.save(monitoramento);
 
-            if (random.nextDouble() < 0.1) {
+            // Verifique se algum alerta deve ser gerado com base nos valores recebidos
+            if (valorExcedeLimite(sensor.getTipo(), valor)) {
                 Alerta alerta = new Alerta();
                 alerta.setSensor(sensor);
                 alerta.setHoraAlerta(timestamp);
                 alerta.setDescricao(gerarDescricao(sensor.getTipo()));
-                alerta.setStatus(random.nextBoolean() ? "Pendente" : "Resolvido");
+                alerta.setStatus("Pendente");
 
                 alertaRepository.save(alerta);
             }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        } else {
+            // Tratar caso onde o sensorId não exista
+            System.out.println("Sensor com ID " + sensorId + " não encontrado.");
         }
     }
 
-    private double gerarValor(String tipo) {
+    private boolean valorExcedeLimite(String tipo, double valor) {
         switch (tipo) {
             case "Temperatura":
-                return round(random.nextDouble() * 20 + 15, 2);
+                return valor > 30; // Exemplo de limite
             case "Umidade":
-                return round(random.nextDouble() * 40 + 30, 2);
+                return valor < 30 || valor > 70; // Exemplo de limite
             case "Pressão":
-                return round(random.nextDouble() * 1000 + 1000, 2);
+                return valor < 1000 || valor > 1100; // Exemplo de limite
             case "Vibração":
-                return round(random.nextDouble() * 10, 2);
+                return valor > 5; // Exemplo de limite
             case "pH":
-                return round(random.nextDouble() * 14, 2);
+                return valor < 6 || valor > 8; // Exemplo de limite
             case "Precisão de Corte":
-                return round(random.nextDouble(), 2);
+                return valor < 0.5; // Exemplo de limite
             default:
-                return 0;
+                return false;
         }
     }
 
@@ -101,12 +89,5 @@ public class MonitoramentoService {
             default:
                 return "Alerta desconhecido";
         }
-    }
-
-    private double round(double value, int places) {
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
     }
 }
