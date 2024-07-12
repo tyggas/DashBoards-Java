@@ -7,7 +7,7 @@ function toggleNotifications() {
 document.addEventListener('click', function(event) {
     var sidebar = document.getElementById("notificationsSidebar");
     var bellButton = document.querySelector('.btn.notifications');
-    
+
     if (!sidebar.contains(event.target) && !bellButton.contains(event.target)) {
         sidebar.classList.remove("active");
     }

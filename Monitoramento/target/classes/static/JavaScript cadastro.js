@@ -2,7 +2,6 @@ document.getElementById('machineForm').addEventListener('submit', function(event
     event.preventDefault();
     
     const machineData = {
-        id_maquina: document.getElementById('id_maquina').value,
         status: document.getElementById('status').value,
         nome: document.getElementById('nome').value,
         id_tipo_maquina: document.getElementById('id_tipo_maquina').value,

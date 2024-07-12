@@ -1,6 +1,6 @@
 package com.example.Monitoramento.Model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
